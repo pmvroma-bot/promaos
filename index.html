@@ -208,29 +208,6 @@ function renderTraining(){
 
             <h3>Como correu o treino?</h3>
 
-/*            <div class="training-summary">
-
-                <label>
-                    Notas do treino
-                    <textarea id="workoutSessionNotes"
-                        rows="3"
-                        placeholder="Como correu, dificuldades, adaptações ou observações...">
-                    </textarea>
-                </label>
-
-                <label>
-                    Avaliação
-                    <select id="workoutSessionFeel">
-                        <option value="">Não indicar</option>
-                        <option>Fácil</option>
-                        <option>Normal</option>
-                        <option>Difícil</option>
-                        <option>Muito difícil</option>
-                    </select>
-                </label>
-
-            </div>
-*/
             <div class="grid two training-metrics">
 
                 <label>
@@ -328,11 +305,11 @@ function renderTrainingHistory(){
 
                     · METs ${t.mets ?? '-'}
 
-                    /* ${t.feel ? ' · ' + esc(t.feel) : ''} */
+                    
 
                 </p>
 
-                /* ${t.notes ? `<p>${esc(t.notes)}</p>` : ''} */
+                
 
                 <p class="small muted">
                     ${(t.exercises||[])
