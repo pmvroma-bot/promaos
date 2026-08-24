@@ -208,7 +208,7 @@ function renderTraining(){
 
             <h3>Como correu o treino?</h3>
 
-            <div class="training-summary">
+/*            <div class="training-summary">
 
                 <label>
                     Notas do treino
@@ -230,7 +230,7 @@ function renderTraining(){
                 </label>
 
             </div>
-
+*/
             <div class="grid two training-metrics">
 
                 <label>
@@ -240,7 +240,7 @@ function renderTraining(){
                         type="number"
                         min="0"
                         step="1"
-                        placeholder="45">
+                        placeholder="">
                 </label>
 
                 <label>
@@ -250,7 +250,7 @@ function renderTraining(){
                         type="number"
                         min="0"
                         step="1"
-                        placeholder="450">
+                        placeholder="">
                 </label>
 
                 <label>
@@ -259,9 +259,9 @@ function renderTraining(){
                         id="workoutIntensity"
                         type="number"
                         min="1"
-                        max="10"
+                        max="100"
                         step="1"
-                        placeholder="7">
+                        placeholder="">
                 </label>
 
                 <label>
@@ -271,7 +271,7 @@ function renderTraining(){
                         type="number"
                         min="0"
                         step="1"
-                        placeholder="128">
+                        placeholder="">
                 </label>
 
                 <label>
@@ -281,7 +281,7 @@ function renderTraining(){
                         type="number"
                         min="0"
                         step="0.1"
-                        placeholder="6.5">
+                        placeholder="">
                 </label>
 
             </div>
@@ -322,17 +322,17 @@ function renderTrainingHistory(){
 
                     · 🔥 ${t.calories ?? '-'} kcal
 
-                    · 📈 Intensidade ${t.intensity ?? '-'}/10
+                    · 📈 Intensidade ${t.intensity ?? '-'}%
 
                     · ❤️ ${t.avgHR ?? '-'} bpm
 
                     · METs ${t.mets ?? '-'}
 
-                    ${t.feel ? ' · ' + esc(t.feel) : ''}
+                    /* ${t.feel ? ' · ' + esc(t.feel) : ''} */
 
                 </p>
 
-                ${t.notes ? `<p>${esc(t.notes)}</p>` : ''}
+                /* ${t.notes ? `<p>${esc(t.notes)}</p>` : ''} */
 
                 <p class="small muted">
                     ${(t.exercises||[])
@@ -392,9 +392,9 @@ window.APP={
 
             duration: w.duration || '',
 
-            feel: $('workoutSessionFeel').value,
+            /* feel: $('workoutSessionFeel').value, 
 
-            notes: $('workoutSessionNotes').value,
+            notes: $('workoutSessionNotes').value, */
 
             durationActual: num($('workoutDurationActual').value),
 
