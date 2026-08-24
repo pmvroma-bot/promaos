@@ -231,7 +231,7 @@ function renderTraining(){
                 </label>
 
                 <label>
-                    Intensidade média (1-10)
+                    Intensidade média
                     <input
                         id="workoutIntensity"
                         type="number"
@@ -263,10 +263,15 @@ function renderTraining(){
 
             </div>
 
-        </div>
+                </div>
 
-        <button class="primary" onclick="APP.saveWorkout('${k}')">
+        <button
+            class="primary"
+            style="margin-top:28px"
+            onclick="APP.saveWorkout('${k}')">
+
             Guardar treino concluído
+
         </button>`;
 
     renderTrainingHistory();
