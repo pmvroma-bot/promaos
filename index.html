@@ -321,7 +321,21 @@ function renderTrainingHistory(){
                         .map(e=>esc(e.name))
                         .join(' · ')}
                 </p>
+<div class="actions">
+    <button
+        class="secondary"
+        type="button"
+        data-edit-training="${esc(t.id)}">
+        ✏️ Editar
+    </button>
 
+    <button
+        class="danger"
+        type="button"
+        data-delete-training="${esc(t.id)}">
+        🗑️ Apagar
+    </button>
+</div>
             </div>
 
         `).join('')
