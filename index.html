@@ -91,7 +91,60 @@
 <section id="training" class="screen">
  <div class="card"><div class="row"><h2>Plano de treino</h2></div><p class="muted">Plano previsto separado do registo executado. Depois de guardar, o treino fica no histórico.</p><div id="workoutTabs" class="seg"></div><div id="workoutBox"></div></div>
  
- <div class="card"><h2>📚 Histórico de treino</h2><div class="grid two"><label>Filtrar treino<select id="histWorkout"><option value="">Todos</option><option>A</option><option>B</option><option>C</option></select></label><label>Filtrar exercício<input id="histExercise" placeholder="ex.: Supino"></label></div><div id="trainingHistory" class="list" style="margin-top:10px"></div></div>
+ <div class="card"><h2>📚 Histórico de treino</h2>
+   <div id="editTrainingBox" class="card hidden">
+
+    <h3>Editar treino</h3>
+
+    <input id="editTrainingId" type="hidden">
+
+    <div class="grid two">
+
+        <label>
+            Tempo total
+            <input id="editDurationActual" type="number">
+        </label>
+
+        <label>
+            Total calorias
+            <input id="editCalories" type="number">
+        </label>
+
+        <label>
+            Intensidade (%)
+            <input id="editIntensity" type="number">
+        </label>
+
+        <label>
+            Ritmo cardíaco médio
+            <input id="editAvgHR" type="number">
+        </label>
+
+        <label>
+            METs
+            <input id="editMets" type="number" step="0.1">
+        </label>
+
+    </div>
+
+    <div class="row wrap">
+
+        <button
+            id="saveTrainingEdit"
+            class="primary">
+            Guardar alterações
+        </button>
+
+        <button
+            id="cancelTrainingEdit"
+            class="ghost">
+            Cancelar
+        </button>
+
+    </div>
+
+</div>
+   <div class="grid two"><label>Filtrar treino<select id="histWorkout"><option value="">Todos</option><option>A</option><option>B</option><option>C</option></select></label><label>Filtrar exercício<input id="histExercise" placeholder="ex.: Supino"></label></div><div id="trainingHistory" class="list" style="margin-top:10px"></div></div>
 </section>
 <section id="food" class="screen">
  <div class="card"><div class="row between center"><h2>Calorias hoje</h2><strong id="caloriesText">0 / 2000 kcal</strong></div><div class="progress calories-progress"><i id="caloriesBar"></i></div><p class="muted">Total estimado com base nas refeições registadas hoje.</p></div>
@@ -141,7 +194,7 @@ const EXERCISE_SHEET='exercise-sheet-16.webp';
 const imageNames=['Supino inclinado','Press de ombros','Puxada','Agachamento','Chin-up','Supino com halteres','Press com halteres','Prensa de pernas','Press militar','Elevações laterais','Bíceps inclinado','Tríceps deitado','Passadeira','Bicicleta estática','Elíptica','Remo'];
 function exerciseVisual(n){n=Math.max(0,Math.min(15,Number(n)||0));let col=n%4,row=Math.floor(n/4);return `<div class="exercise-visual"><img src="${EXERCISE_SHEET}" alt="Imagem ilustrativa do exercício" style="transform:translate(-${col*25}%,-${row*25}%)"></div>`;}
 function plans(){return S.customWorkouts||workouts;}
-function initial(){return{version:1,travel:false,profile:{sex:'Homem',age:46,height:1.76,initialWeight:86,waist:100,stepsTarget:8000,proteinTarget:140,caloriesTarget:2000,measureDay:1,workoutTime:'18:30',goal:'Perder gordura preservando massa muscular, melhorar condição cardiovascular, sono, pressão arterial e hábitos sustentáveis.',hypertension:'Hipertensão diagnosticada em fevereiro.',medication:'Anterior: Coversyl 5 mg. Atual/transição: Valsartan 160 mg. Informação apenas registada, sem recomendações de alteração.'},dailyGoals:[{id:'recovery',name:'Recuperação / passos',days:[0,2,4,6],active:true},{id:'steps',name:'7.000–8.000 passos',days:[0,1,2,3,4,5,6],active:true},{id:'protein',name:'Objetivo de proteína',days:[0,1,2,3,4,5,6],active:true},{id:'water',name:'Água',days:[0,1,2,3,4,5,6],active:true},{id:'meals',name:'Refeições equilibradas',days:[0,1,2,3,4,5,6],active:true},{id:'sleep',name:'Sono',days:[0,1,2,3,4,5,6],active:true}],routines:[],routineNotes:{},goalNotes:{},customWorkouts:null,editWorkout:'A',scheduleMigrated:false,plan:{start:BASE,weeks:10,calendar:{1:'A',2:'Recuperação / passos',3:'B',4:'Recuperação',5:'C',6:'Opcional',0:'Revisão'}},checks:{},measurements:[{id:uid(),date:BASE,label:'Semana 1 — Baseline',weight:86,bmi:27.4,waist:100,fatPct:28.5,musclePct:37.9,waterPct:51.9,proteinPct:16.5,visceralFat:15,bonePct:3.7,bmr:1680,bioAge:48,fatKg:24.2,bfmi:6,ffm:60.7,sys:125,dia:85,hr:80,notes:'Baseline'}],bp:[{id:uid(),date:BASE,time:'22:30',sys:125,dia:85,hr:80,notes:'Baseline'}],trainings:[],meals:[],daily:{},activeWorkout:'A'};}
+function initial(){return{version:1,travel:false,profile:{sex:'Homem',age:46,height:1.76,initialWeight:86,waist:100,stepsTarget:8000,proteinTarget:140,caloriesTarget:2000,measureDay:1,workoutTime:'18:30',goal:'Perder gordura preservando massa muscular, melhorar condição cardiovascular, sono, pressão arterial e hábitos sustentáveis.',hypertension:'Hipertensão diagnosticada em fevereiro.',medication:'Anterior: Coversyl 5 mg. Atual/transição: Valsartan 160 mg. Informação apenas registada, sem recomendações de alteração.'},dailyGoals:[{id:'recovery',name:'Recuperação / passos',days:[0,2,4,6],active:true},{id:'steps',name:'7.000–8.000 passos',days:[0,1,2,3,4,5,6],active:true},{id:'protein',name:'Objetivo de proteína',days:[0,1,2,3,4,5,6],active:true},{id:'water',name:'Água',days:[0,1,2,3,4,5,6],active:true},{id:'meals',name:'Refeições equilibradas',days:[0,1,2,3,4,5,6],active:true},{id:'sleep',name:'Sono',days:[0,1,2,3,4,5,6],active:true}],routines:[],routineNotes:{},goalNotes:{},customWorkouts:null,editWorkout:'A',scheduleMigrated:false,plan:{start:BASE,weeks:10,calendar:{1:'A',2:'Recuperação / passos',3:'B',4:'Recuperação',5:'C',6:'Opcional',0:'Revisão'}},checks:{},measurements:[{id:uid(),date:BASE,label:'Semana 1 — Baseline',weight:86,bmi:27.4,waist:100,fatPct:28.5,musclePct:37.9,waterPct:51.9,proteinPct:16.5,visceralFat:15,bonePct:3.7,bmr:1680,bioAge:48,fatKg:24.2,bfmi:6,ffm:60.7,sys:125,dia:85,hr:80,notes:'Baseline'}],bp:[{id:uid(),date:BASE,time:'22:30',sys:125,dia:85,hr:80,notes:'Baseline'}],trainings:[],meals:[],editingTraining:null,daily:{},activeWorkout:'A'};}
 let S=initial(),db=null;
 function merge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k]))a[k]=merge(a[k]||{},b[k]);else a[k]=b[k];}return a;}
 function openDB(){return new Promise((ok,no)=>{let r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE)};r.onsuccess=()=>{db=r.result;ok()};r.onerror=()=>no(r.error)})}
@@ -314,7 +367,21 @@ function renderTrainingHistory(){
 
                 </p>
 
-                
+                <div class="actions">
+
+    <button
+        class="secondary"
+        data-edit-training="${t.id}">
+        ✏️ Editar
+    </button>
+
+    <button
+        class="danger"
+        data-delete-training="${t.id}">
+        🗑️ Apagar
+    </button>
+
+</div>
 
                 <p class="small muted">
                     ${(t.exercises||[])
@@ -330,6 +397,32 @@ function renderTrainingHistory(){
 
         '<p class="muted">Sem histórico.</p>';
 }  
+function editTraining(id){
+
+    let t = S.trainings.find(x => x.id === id);
+
+    if(!t) return;
+
+    $('editTrainingBox')
+        .classList.remove('hidden');
+
+    $('editTrainingId').value = t.id;
+
+    $('editDurationActual').value =
+        t.durationActual ?? '';
+
+    $('editCalories').value =
+        t.calories ?? '';
+
+    $('editIntensity').value =
+        t.intensity ?? '';
+
+    $('editAvgHR').value =
+        t.avgHR ?? '';
+
+    $('editMets').value =
+        t.mets ?? '';
+}
 function renderFood(){let ms=todayMeals(),prot=ms.reduce((a,m)=>a+(m.protein||0),0),cal=ms.reduce((a,m)=>a+(m.calories||0),0),calTarget=S.profile.caloriesTarget||2000;$('caloriesText').textContent=Math.round(cal)+' / '+calTarget+' kcal';$('caloriesBar').style.width=Math.min(100,cal/calTarget*100)+'%';$('proteinText').textContent=prot+' / '+S.profile.proteinTarget+' g';$('proteinBar').style.width=Math.min(100,prot/S.profile.proteinTarget*100)+'%';$('mealButtons').innerHTML=['🍳 Pequeno-almoço','🥗 Almoço','🍎 Snack','🍽️ Jantar','☕ Extra'].map(x=>`<button data-meal="${x}">${x}</button>`).join('');$('mealHistory').innerHTML=ms.map(m=>`<div class="item"><b>${m.type}</b><p>${m.desc}</p><p class="muted">${m.protein||0} g proteína ${m.calories?'· '+m.calories+' kcal':''}</p></div>`).join('')||'<p class="muted">Sem refeições registadas hoje.</p>';}
 function renderHealth(){if(!$('measureDate').value)$('measureDate').value=iso();if(!$('bpDate').value)$('bpDate').value=iso();if(!$('bpTime').value)$('bpTime').value=time();if(!$('dailyDate').value)$('dailyDate').value=iso();let avg=avgBP(30),last=latest(S.bp);let high=S.bp.slice(0,5).filter(b=>b.sys>=140||b.dia>=90).length;$('bpSummary').innerHTML=(last&&((last.sys>=180)||(last.dia>=120)))?'<div class="alert">Valor muito elevado. Repete a medição após alguns minutos de repouso. Se persistir ou existirem sintomas importantes, procura avaliação médica.</div>':high>=3?'<div class="alert">Os valores registados parecem estar acima do objetivo definido. Considera discutir a tendência com o teu médico.</div>':avg?`<div class="ok">Última: ${last.sys}/${last.dia} · ${last.hr||'—'} bpm<br>Média 30 dias: ${Math.round(avg.sys)}/${Math.round(avg.dia)}</div>`:'';$('healthHistory').innerHTML='<h3>Medições</h3>'+S.measurements.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(m=>`<div class="item"><b>${fmtDate(m.date)} · ${m.label||''}</b><p class="muted">Peso ${m.weight??'—'} kg · Cintura ${m.waist??'—'} cm · Gordura ${m.fatPct??'—'}% · PA ${m.sys??'—'}/${m.dia??'—'}</p></div>`).join('')+'<h3>Pressão arterial</h3>'+S.bp.slice().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).map(b=>`<div class="item"><b>${fmtDate(b.date)} ${b.time||''}</b><p class="muted">${b.sys}/${b.dia} · ${b.hr||'—'} bpm ${b.notes?'· '+b.notes:''}</p></div>`).join('');}
 function avgBP(days){let cut=new Date();cut.setDate(cut.getDate()-days);let a=S.bp.filter(b=>new Date(b.date)>=cut);return a.length?{sys:mean(a.map(b=>b.sys)),dia:mean(a.map(b=>b.dia)),hr:mean(a.map(b=>b.hr))}:null;}
@@ -401,7 +494,69 @@ window.APP={
         render();}};
 function exportData(){let blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='meus_dados_saude.json';a.click();URL.revokeObjectURL(a.href);}
 function importData(file){let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result);let replace=confirm('Importar dados: OK para substituir os dados atuais. Cancelar para juntar aos dados existentes.');if(replace)S=merge(initial(),data);else{['measurements','bp','trainings','meals'].forEach(k=>S[k]=[...(S[k]||[]),...(data[k]||[])]);S.daily={...(S.daily||{}),...(data.daily||{})};S.checks={...(S.checks||{}),...(data.checks||{})};S.profile={...S.profile,...(data.profile||{})};S.plan={...S.plan,...(data.plan||{})};}save();render();alert('Dados importados.');}catch(e){alert('JSON inválido.');}};r.readAsText(file);}
-function setup(){document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>nav(b.dataset.screen));$('travelBtn').onclick=()=>{S.travel=!S.travel;save();render();};$('resetChecks').onclick=()=>{S.checks[iso()]={};save();render();};document.addEventListener('change',e=>{if(e.target.dataset.check!==undefined){S.checks[iso()][e.target.dataset.check]=e.target.checked;save();renderHome();}if(e.target.dataset.wtab){S.activeWorkout=e.target.dataset.wtab;save();renderTraining();}});document.addEventListener('input',e=>{if(e.target.dataset.routineNote!==undefined){S.routineNotes=S.routineNotes||{};S.routineNotes[iso()]=S.routineNotes[iso()]||{};S.routineNotes[iso()][e.target.dataset.routineNote]=e.target.value;save();}if(e.target.dataset.goalNote!==undefined){S.goalNotes=S.goalNotes||{};S.goalNotes[iso()]=S.goalNotes[iso()]||{};S.goalNotes[iso()][e.target.dataset.goalNote]=e.target.value;save();}});document.addEventListener('click',e=>{if(e.target.dataset.wtab){S.activeWorkout=e.target.dataset.wtab;save();renderTraining();}if(e.target.dataset.meal){$('mealType').value=e.target.dataset.meal;$('mealForm').classList.remove('hidden');$('mealDesc').focus();}if(e.target.dataset.editWorkoutTab){S.editWorkout=e.target.dataset.editWorkoutTab;save();renderWorkoutEditor();}if(e.target.dataset.removeExercise!==undefined){ensureCustomWorkouts();S.customWorkouts[S.editWorkout].ex.splice(Number(e.target.dataset.removeExercise),1);save();renderWorkoutEditor();}if(e.target.dataset.editGoal)editGoal(e.target.dataset.editGoal);if(e.target.dataset.deleteGoal){S.dailyGoals=S.dailyGoals.filter(x=>x.id!==e.target.dataset.deleteGoal);save();render();}if(e.target.dataset.editRoutine)editRoutine(e.target.dataset.editRoutine);if(e.target.dataset.deleteRoutine){S.routines=S.routines.filter(x=>x.id!==e.target.dataset.deleteRoutine);save();render();}});$('histWorkout').onchange=renderTrainingHistory;$('histExercise').oninput=renderTrainingHistory;$('mealForm').onsubmit=e=>{e.preventDefault();S.meals.unshift({id:uid(),date:iso(),time:time(),type:$('mealType').value,desc:$('mealDesc').value,protein:num($('mealProtein').value)||0,calories:num($('mealCalories').value),notes:$('mealNotes').value});e.target.reset();e.target.classList.add('hidden');save();render();};$('measurementForm').onsubmit=e=>{e.preventDefault();let o={id:uid(),date:$('measureDate').value||iso(),label:$('measureLabel').value||'Semana '+week(),weight:num($('mWeight').value),waist:num($('mWaist').value),fatPct:num($('mFatPct').value),musclePct:num($('mMuscle').value),waterPct:num($('mWater').value),proteinPct:num($('mProteinPct').value),visceralFat:num($('mVisceral').value),bonePct:num($('mBone').value),bmr:num($('mBmr').value),bioAge:num($('mBioAge').value),fatKg:num($('mFatKg').value),bfmi:num($('mBfmi').value),ffm:num($('mFfm').value),sys:num($('mSys').value),dia:num($('mDia').value),hr:num($('mHr').value),sleep:num($('mSleep').value),stress:num($('mStress').value),alcohol:$('mAlcohol').value,travel:$('mTravel').value,notes:$('mNotes').value};S.measurements.unshift(o);if(o.sys&&o.dia)S.bp.unshift({id:uid(),date:o.date,time:time(),sys:o.sys,dia:o.dia,hr:o.hr,notes:'Registo da medição semanal'});save();e.target.reset();$('measureDate').value=iso();render();};$('bpForm').onsubmit=e=>{e.preventDefault();S.bp.unshift({id:uid(),date:$('bpDate').value||iso(),time:$('bpTime').value||time(),sys:num($('bpSys').value),dia:num($('bpDia').value),hr:num($('bpHr').value),notes:$('bpNotes').value});save();e.target.reset();$('bpDate').value=iso();$('bpTime').value=time();render();};$('dailyForm').onsubmit=e=>{e.preventDefault();let d=$('dailyDate').value||iso();S.daily[d]={date:d,steps:num($('dSteps').value),bed:$('dBed').value,wake:$('dWake').value,sleep:num($('dSleep').value),sleepQuality:num($('dSleepQ').value),stress:num($('dStress').value),water:num($('dWater').value)};save();render();};$('addExerciseBtn').onclick=()=>{ensureCustomWorkouts();S.customWorkouts[S.editWorkout||'A'].ex.push(['Novo exercício','','','',0]);save();renderWorkoutEditor();};$('restoreWorkoutsBtn').onclick=()=>{S.customWorkouts=null;save();render();};$('workoutEditForm').onsubmit=e=>{e.preventDefault();ensureCustomWorkouts();let k=S.editWorkout||'A',w=S.customWorkouts[k];w.name=$('editWorkoutName').value.trim();w.duration=$('editWorkoutDuration').value.trim();w.ex=[...document.querySelectorAll('#editExerciseList .item')].map(item=>{let row=item.querySelector('.exercise-editor');return[row.querySelector('.editExName').value.trim(),'','',item.querySelector('.editExNotes').value.trim(),Number(row.querySelector('.editExImage').value)]});save();render();alert('Treino atualizado.');};$('goalForm').onsubmit=e=>{e.preventDefault();let days=[...document.querySelectorAll('#goalDays input:checked')].map(x=>+x.value);if(!days.length)return alert('Seleciona pelo menos um dia.');let id=$('goalId').value,o={id:id||uid(),name:$('goalName').value.trim(),days,active:true};if(id)Object.assign(S.dailyGoals.find(x=>x.id===id),o);else S.dailyGoals.push(o);save();resetEditor('goal');render()};$('cancelGoalEdit').onclick=()=>resetEditor('goal');$('routineForm').onsubmit=e=>{e.preventDefault();let days=[...document.querySelectorAll('#routineDays input:checked')].map(x=>+x.value);if(!days.length)return alert('Seleciona pelo menos um dia.');let id=$('routineId').value,o={id:id||uid(),name:$('routineName').value.trim(),time:$('routineTime').value,days,active:true};if(id){let current=S.routines.find(x=>x.id===id);Object.assign(current,o);}else S.routines.push(o);save();resetEditor('routine');render()};$('cancelRoutineEdit').onclick=()=>resetEditor('routine');$('configForm').onsubmit=e=>{e.preventDefault();Object.assign(S.profile,{age:num($('cAge').value),height:num($('cHeight').value),stepsTarget:num($('cSteps').value),proteinTarget:num($('cProtein').value),caloriesTarget:num($('cCalories').value)||2000,workoutTime:$('cTime').value||S.profile.workoutTime||'18:30',measureDay:num($('cMeasureDay').value),goal:$('cGoal').value,medication:$('cMedication').value});save();render();};$('exportBtn').onclick=exportData;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$('wipeBtn').onclick=()=>$('wipeModal').classList.add('active');$('cancelWipe').onclick=()=>$('wipeModal').classList.remove('active');$('exportFirst').onclick=exportData;$('confirmWipe').onclick=async()=>{S = initial();await dbPut(S);$('wipeModal').classList.remove('active');render();};$('selfTestBtn').onclick=()=>{let raw=JSON.stringify(S);let test=JSON.parse(raw);let ok=!!(test.measurements&&test.bp&&test.meals&&test.trainings);$('selfTestOut').innerHTML=`<div class="${ok?'ok':'alert'}">Teste interno: estrutura de dados ${ok?'OK':'com erro'}; IndexedDB ativa: ${!!db}</div>`;};}
+function setup(){document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>nav(b.dataset.screen));$('saveTrainingEdit').onclick = ()=>{
+
+    let id = $('editTrainingId').value;
+
+    let t = S.trainings.find(
+        x => x.id === id
+    );
+
+    if(!t) return;
+
+    t.durationActual =
+        num($('editDurationActual').value);
+
+    t.calories =
+        num($('editCalories').value);
+
+    t.intensity =
+        num($('editIntensity').value);
+
+    t.avgHR =
+        num($('editAvgHR').value);
+
+    t.mets =
+        num($('editMets').value);
+
+    save();
+
+    $('editTrainingBox')
+        .classList.add('hidden');
+
+    renderTrainingHistory();
+};
+$('cancelTrainingEdit').onclick = ()=>{
+
+    $('editTrainingBox')
+        .classList.add('hidden');
+
+};                 
+                 
+                 
+                 $('travelBtn').onclick=()=>{S.travel=!S.travel;save();render();};$('resetChecks').onclick=()=>{S.checks[iso()]={};save();render();};document.addEventListener('change',e=>{if(e.target.dataset.check!==undefined){S.checks[iso()][e.target.dataset.check]=e.target.checked;save();renderHome();}if(e.target.dataset.wtab){S.activeWorkout=e.target.dataset.wtab;save();renderTraining();}});document.addEventListener('input',e=>{if(e.target.dataset.routineNote!==undefined){S.routineNotes=S.routineNotes||{};S.routineNotes[iso()]=S.routineNotes[iso()]||{};S.routineNotes[iso()][e.target.dataset.routineNote]=e.target.value;save();}if(e.target.dataset.goalNote!==undefined){S.goalNotes=S.goalNotes||{};S.goalNotes[iso()]=S.goalNotes[iso()]||{};S.goalNotes[iso()][e.target.dataset.goalNote]=e.target.value;save();}});document.addEventListener('click',e=>{if(e.target.dataset.wtab){S.activeWorkout=e.target.dataset.wtab;save();renderTraining();}if(e.target.dataset.meal){$('mealType').value=e.target.dataset.meal;$('mealForm').classList.remove('hidden');$('mealDesc').focus();}if(e.target.dataset.editWorkoutTab){S.editWorkout=e.target.dataset.editWorkoutTab;save();renderWorkoutEditor();}if(e.target.dataset.removeExercise!==undefined){ensureCustomWorkouts();S.customWorkouts[S.editWorkout].ex.splice(Number(e.target.dataset.removeExercise),1);save();renderWorkoutEditor();}if(e.target.dataset.editGoal)editGoal(e.target.dataset.editGoal);if(e.target.dataset.deleteGoal){S.dailyGoals=S.dailyGoals.filter(x=>x.id!==e.target.dataset.deleteGoal);save();render();}if(e.target.dataset.editRoutine)editRoutine(e.target.dataset.editRoutine);if(e.target.dataset.deleteRoutine){S.routines=S.routines.filter(x=>x.id!==e.target.dataset.deleteRoutine);if(e.target.dataset.editTraining){editTraining(e.target.dataset.editTraining);if(e.target.dataset.deleteTraining){
+
+    let id =
+        e.target.dataset.deleteTraining;
+
+    if(confirm('Apagar treino?')){
+
+        S.trainings =
+            S.trainings.filter(
+                x => x.id !== id
+            );
+
+        save();
+
+        renderTrainingHistory();
+    }
+};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  save();render();}});$('histWorkout').onchange=renderTrainingHistory;$('histExercise').oninput=renderTrainingHistory;$('mealForm').onsubmit=e=>{e.preventDefault();S.meals.unshift({id:uid(),date:iso(),time:time(),type:$('mealType').value,desc:$('mealDesc').value,protein:num($('mealProtein').value)||0,calories:num($('mealCalories').value),notes:$('mealNotes').value});e.target.reset();e.target.classList.add('hidden');save();render();};$('measurementForm').onsubmit=e=>{e.preventDefault();let o={id:uid(),date:$('measureDate').value||iso(),label:$('measureLabel').value||'Semana '+week(),weight:num($('mWeight').value),waist:num($('mWaist').value),fatPct:num($('mFatPct').value),musclePct:num($('mMuscle').value),waterPct:num($('mWater').value),proteinPct:num($('mProteinPct').value),visceralFat:num($('mVisceral').value),bonePct:num($('mBone').value),bmr:num($('mBmr').value),bioAge:num($('mBioAge').value),fatKg:num($('mFatKg').value),bfmi:num($('mBfmi').value),ffm:num($('mFfm').value),sys:num($('mSys').value),dia:num($('mDia').value),hr:num($('mHr').value),sleep:num($('mSleep').value),stress:num($('mStress').value),alcohol:$('mAlcohol').value,travel:$('mTravel').value,notes:$('mNotes').value};S.measurements.unshift(o);if(o.sys&&o.dia)S.bp.unshift({id:uid(),date:o.date,time:time(),sys:o.sys,dia:o.dia,hr:o.hr,notes:'Registo da medição semanal'});save();e.target.reset();$('measureDate').value=iso();render();};$('bpForm').onsubmit=e=>{e.preventDefault();S.bp.unshift({id:uid(),date:$('bpDate').value||iso(),time:$('bpTime').value||time(),sys:num($('bpSys').value),dia:num($('bpDia').value),hr:num($('bpHr').value),notes:$('bpNotes').value});save();e.target.reset();$('bpDate').value=iso();$('bpTime').value=time();render();};$('dailyForm').onsubmit=e=>{e.preventDefault();let d=$('dailyDate').value||iso();S.daily[d]={date:d,steps:num($('dSteps').value),bed:$('dBed').value,wake:$('dWake').value,sleep:num($('dSleep').value),sleepQuality:num($('dSleepQ').value),stress:num($('dStress').value),water:num($('dWater').value)};save();render();};$('addExerciseBtn').onclick=()=>{ensureCustomWorkouts();S.customWorkouts[S.editWorkout||'A'].ex.push(['Novo exercício','','','',0]);save();renderWorkoutEditor();};$('restoreWorkoutsBtn').onclick=()=>{S.customWorkouts=null;save();render();};$('workoutEditForm').onsubmit=e=>{e.preventDefault();ensureCustomWorkouts();let k=S.editWorkout||'A',w=S.customWorkouts[k];w.name=$('editWorkoutName').value.trim();w.duration=$('editWorkoutDuration').value.trim();w.ex=[...document.querySelectorAll('#editExerciseList .item')].map(item=>{let row=item.querySelector('.exercise-editor');return[row.querySelector('.editExName').value.trim(),'','',item.querySelector('.editExNotes').value.trim(),Number(row.querySelector('.editExImage').value)]});save();render();alert('Treino atualizado.');};$('goalForm').onsubmit=e=>{e.preventDefault();let days=[...document.querySelectorAll('#goalDays input:checked')].map(x=>+x.value);if(!days.length)return alert('Seleciona pelo menos um dia.');let id=$('goalId').value,o={id:id||uid(),name:$('goalName').value.trim(),days,active:true};if(id)Object.assign(S.dailyGoals.find(x=>x.id===id),o);else S.dailyGoals.push(o);save();resetEditor('goal');render()};$('cancelGoalEdit').onclick=()=>resetEditor('goal');$('routineForm').onsubmit=e=>{e.preventDefault();let days=[...document.querySelectorAll('#routineDays input:checked')].map(x=>+x.value);if(!days.length)return alert('Seleciona pelo menos um dia.');let id=$('routineId').value,o={id:id||uid(),name:$('routineName').value.trim(),time:$('routineTime').value,days,active:true};if(id){let current=S.routines.find(x=>x.id===id);Object.assign(current,o);}else S.routines.push(o);save();resetEditor('routine');render()};$('cancelRoutineEdit').onclick=()=>resetEditor('routine');$('configForm').onsubmit=e=>{e.preventDefault();Object.assign(S.profile,{age:num($('cAge').value),height:num($('cHeight').value),stepsTarget:num($('cSteps').value),proteinTarget:num($('cProtein').value),caloriesTarget:num($('cCalories').value)||2000,workoutTime:$('cTime').value||S.profile.workoutTime||'18:30',measureDay:num($('cMeasureDay').value),goal:$('cGoal').value,medication:$('cMedication').value});save();render();};$('exportBtn').onclick=exportData;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$('wipeBtn').onclick=()=>$('wipeModal').classList.add('active');$('cancelWipe').onclick=()=>$('wipeModal').classList.remove('active');$('exportFirst').onclick=exportData;$('confirmWipe').onclick=async()=>{S = initial();await dbPut(S);$('wipeModal').classList.remove('active');render();};$('selfTestBtn').onclick=()=>{let raw=JSON.stringify(S);let test=JSON.parse(raw);let ok=!!(test.measurements&&test.bp&&test.meals&&test.trainings);$('selfTestOut').innerHTML=`<div class="${ok?'ok':'alert'}">Teste interno: estrutura de dados ${ok?'OK':'com erro'}; IndexedDB ativa: ${!!db}</div>`;};}
 boot().catch(e=>{console.error(e);alert('Não foi possível iniciar o PRomaOS.');});
 })();
 </script>
